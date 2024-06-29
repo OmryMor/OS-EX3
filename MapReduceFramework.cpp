@@ -26,7 +26,7 @@ typedef struct
     std::atomic<int> totalKeys;
 } JobContext;
 
-JobHandle createJobContext (int numberOfThreads)
+JobContext* createJobContext (int numberOfThreads)
 {
   auto *job_context = (JobContext *) (malloc (sizeof (JobContext)));
   if (job_context == nullptr)
@@ -46,7 +46,7 @@ JobHandle createJobContext (int numberOfThreads)
     //TODO free memory?
     exit (1);
   }
-  return static_cast<JobHandle>(job_context);
+  return job_context;
 }
 
 void
@@ -69,7 +69,9 @@ JobHandle startMapReduceJob (const MapReduceClient &client,
                              int multiThreadLevel)
 {
   //TODO check valid arguments
-  JobHandle job_context = createJobContext (multiThreadLevel);
-  createWorkingThreads (job_context.threads)
+  JobContext *job_context = createJobContext (multiThreadLevel);
+  createWorkingThreads (job_context->threads, multiThreadLevel);
 
+
+  return static_cast<JobHandle>(job_context);
 }
