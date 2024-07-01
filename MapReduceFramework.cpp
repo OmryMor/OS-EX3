@@ -18,9 +18,13 @@
 #define SYSTEM_ERROR_MSG "system error: "
 #define SUCCESS_RET_VAL 0
 
+
+
+
 /*************************************************************************
  *                        JobContext Management                          *
  *************************************************************************/
+
 
 typedef struct
 {
@@ -28,6 +32,7 @@ typedef struct
     const InputVec *input_vec;
     OutputVec *output_vec;
     std::vector<IntermediateVec> intermediate_data;
+    std::vector<IntermediateVec*> shuffle_vec;
     std::vector<pthread_t> threads;
     int number_of_threads;
     std::atomic<int> atomic_counter;
@@ -40,6 +45,14 @@ typedef struct
     pthread_mutex_t reduce_mutex;
 
 } JobContext;
+
+
+typedef struct
+{
+    int tid;
+    JobContext *job;
+}ThreadContext;
+
 
 JobContext *createJobContext (const MapReduceClient &client,
                               const InputVec &inputVec, OutputVec &outputVec,
@@ -70,10 +83,32 @@ JobContext *createJobContext (const MapReduceClient &client,
   sem_init (&job_context->semaphore, 0, 0);
 
   job_context->barrier = new Barrier (multiThreadLevel);
-
+  job_context->intermediate_data.resize (multiThreadLevel);
   job_context->threads.resize (multiThreadLevel);
 
+
   return job_context;
+}
+
+void createThreadVector(int num_of_threads, std::vector<ThreadContext*>*
+    thread_vec,
+                        JobContext*
+job)
+{
+  for (int i = 0; i < num_of_threads; ++i)
+  {
+    ThreadContext * t = (ThreadContext *)malloc(sizeof (ThreadContext ));
+    if(t== nullptr)
+    {
+      std::cout << SYSTEM_ERROR_MSG << "Failed to allocate memory while "
+                                       "creating thread struct" << std::endl;
+      //TODO free memory
+      exit(1);
+    }
+    t->tid = i;
+    t->job = job;
+    thread_vec->push_back(t);
+  }
 }
 
 void destroyJobContext (JobContext *context)
@@ -106,20 +141,64 @@ void check_ret_code (int ret_code, std::string &error_message)
 }
 
 /*************************************************************************
+ *                        Helper Functions                               *
+ *************************************************************************/
+
+void update_job_state(JobHandle context, stage_t new_stage, int
+atmoic_counter)
+{
+  JobContext* job_context = getJobContext (context);
+  if(new_stage == UNDEFINED_STAGE)
+  {
+    return;
+  }
+  if(new_stage == MAP_STAGE)
+  {
+    uint64_t state = new_stage << 62| atmoic_counter << 31 |
+                     job_context->input_vec->size();
+    job_context->job_state.store (state);
+    return;
+  }
+  else if(new_stage == REDUCE_STAGE)
+  {
+
+  }
+
+  else{}
+}
+
+
+
+void lock_and_validate_mutex(pthread_mutex_t* mutex)
+{
+  int ret_val = pthread_mutex_lock(mutex);
+  check_ret_code (ret_val, (std::string &) "Failed to lock mutex");
+}
+
+void unlock_and_validate_mutex(pthread_mutex_t* mutex)
+{
+  int ret_val = pthread_mutex_unlock(mutex);
+  check_ret_code (ret_val, (std::string &) "Failed to unlock mutex");
+}
+
+/*************************************************************************
  *                        Map Implementation                             *
  *************************************************************************/
 
 void *runMapPhase (void *args)
 {
-  auto *context = static_cast<JobContext *>(args);
+  auto *thread_context = static_cast<ThreadContext *>(args);
+  auto * context = thread_context->job;
   int input_vec_size = context->input_vec->size ();
   int old_value = context->atomic_counter.fetch_add (1);
   while (old_value < input_vec_size)
   {
-    //TODO update stage - number of key that needs to be processed.
-    //TODO should do it under mutex - map mutex
+    lock_and_validate_mutex (&context->map_mutex);
+    //TODO check if the counter works
+    update_job_state (context,MAP_STAGE, old_value + 1);
+    unlock_and_validate_mutex (&context->map_mutex);
     const InputPair &pair = (*context->input_vec)[old_value];
-    context->client->map (pair.first, pair.second, context);
+    context->client->map (pair.first, pair.second, thread_context);
     old_value = context->atomic_counter.fetch_add (1);
   }
 }
@@ -133,42 +212,41 @@ bool keysAreEqual (const K2 *key1, const K2 *key2)
   return !(*key1 < *key2) && !(*key2 < *key1);
 }
 
-std::vector<IntermediateVec*> *runShufflePhase (void *args)
+void* runShufflePhase (void *args)
 {
-  auto *context = static_cast<JobContext *>(args);
+  auto *thread_context = static_cast<ThreadContext *>(args);
+  auto * context = thread_context->job;
   //TODO update stage - number of key that needs to be processed.
   //TODO should do it under mutex - ?? mutex
   // Using a queue of vectors for each key
-  std::vector<IntermediateVec*>* shuffle_keys_vec;
-  if (context->atomic_counter.load () == 0)
+  if(thread_context->tid != 0){return nullptr;}
+
+  // Process each thread's intermediate data
+  for (int i = 0; i < context->number_of_threads; ++i)
   {
-    // Process each thread's intermediate data
-    for (int i = 0; i < context->number_of_threads; ++i)
+    auto &intermediate_vec = context->intermediate_data[i];
+    while (!intermediate_vec.empty ())
     {
-      auto &intermediate_vec = context->intermediate_data[i];
-      while (!intermediate_vec.empty ())
+      K2* current_key = intermediate_vec.back ().first;
+      std::vector<IntermediatePair> *current_key_vec;
+
+      // Collect all pairs with the same key into a new vector
+      IntermediatePair intermediate_pair = intermediate_vec.back ();
+      const K2 *intermediate_key = intermediate_pair.first;
+      while (!intermediate_vec.empty () && keysAreEqual (intermediate_key,
+                                                         current_key))
       {
-        K2 *current_key = intermediate_vec.back ().first;
-        std::vector<IntermediatePair> *current_key_vec;
-
-        // Collect all pairs with the same key into a new vector
-        IntermediatePair intermediate_pair = intermediate_vec.back ();
-        const K2 *intermediate_key = intermediate_pair.first;
-        while (!intermediate_vec.empty () && keysAreEqual (intermediate_key,
-                                                           current_key))
-        {
-          current_key_vec->push_back (intermediate_pair);
-          intermediate_vec.pop_back ();
-          intermediate_pair = intermediate_vec.back ();
-          intermediate_key = intermediate_pair.first;
-
-        }
-        // Push the new vector to the queue
-        shuffle_keys_vec->push_back (current_key_vec);
+        current_key_vec->push_back (intermediate_pair);
+        intermediate_vec.pop_back ();
+        intermediate_pair = intermediate_vec.back ();
+        intermediate_key = intermediate_pair.first;
       }
-      //TODO use semaphores
+      // Push the new vector to the queue
+      shuffle_keys_vec->push_back (current_key_vec);
     }
-  }
+    //TODO use semaphores
+    }
+
   return shuffle_keys_vec;
 }
 
@@ -184,6 +262,7 @@ void *runReducePhase (void *args, std::vector<IntermediateVec*>& shuffle_vec)
   {
     //TODO update stage - number of key that needs to be processed.
     //TODO should do it under mutex - reduce mutex
+
     const IntermediateVec* vec_to_reduce = shuffle_vec[old_value];
     context->client->reduce (vec_to_reduce, context);
     old_value = context->atomic_counter.fetch_add (1);
@@ -204,29 +283,31 @@ bool compare_keys (const IntermediatePair &a, const IntermediatePair &b)
 
 void *runMapReduceAlgorithm (void *args)
 {
-  auto *context = static_cast<JobContext *>(args);
+  auto *thread_context = static_cast<ThreadContext *>(args);
+  int thread_id = thread_context->tid;
+  auto* context = thread_context->job;
+
 
   //Run Map phase
   runMapPhase (args);
 
   // Each thread sorts its own intermediate_data vector
-  for (int i = 0; i < context->number_of_threads; i++)
-  {
-    std::sort (context->intermediate_data[i].begin (), context->intermediate_data[i].end (),
-               compare_keys);
-  }
+  std::sort (context->intermediate_data[thread_id].begin(),
+             context->intermediate_data[thread_id].end(),
+             compare_keys);
 
   //make sure that all threads finished sorting their intermediate vectors
-  context->barrier->barrier ();
+  thread_context->job->barrier->barrier ();
 
   //run shuffle only on thread 0
   std::vector<IntermediateVec*> * shuffle_vec = runShufflePhase (args);
 
   //make sure that all shuffle phase is over
-  context->barrier->barrier ();
+  thread_context->job->barrier->barrier ();
   runReducePhase(args, *shuffle_vec);
 
 }
+
 
 /*************************************************************************
  *                            API Framework                              *
@@ -236,14 +317,15 @@ JobHandle startMapReduceJob (const MapReduceClient &client,
                              const InputVec &inputVec, OutputVec &outputVec,
                              int multiThreadLevel)
 {
-  //TODO check valid arguments
   JobContext *job_context = createJobContext (client, inputVec, outputVec, multiThreadLevel);
 
+  std::vector<ThreadContext*> thread_contexts;
+  createThreadVector (multiThreadLevel, &thread_contexts, job_context);
   // run map reduce algorithm on threads 0 to multiThreadLevel-1
   for (int i = 0; i < multiThreadLevel; i++)
   {
     int ret_val = pthread_create (&job_context->threads[i], nullptr,
-                                  runMapReduceAlgorithm, job_context);
+                                  runMapReduceAlgorithm, thread_contexts[i]);
     check_ret_code (ret_val, (std::string &) "Failed to create threads");
   }
   return static_cast<JobHandle>(job_context);
@@ -251,11 +333,13 @@ JobHandle startMapReduceJob (const MapReduceClient &client,
 
 void emit2 (K2 *key, V2 *value, void *context)
 {
-  auto *job_context = getJobContext (context);
-  //TODO add mutex
-  int threadIndex = job_context->atomic_counter.fetch_add (1)
-                    % job_context->number_of_threads;
-  job_context->intermediate_data[threadIndex].emplace_back (key, value);
+  auto *thread_context = static_cast<ThreadContext *>(context);
+  int thread_id = thread_context->tid;
+  auto* job_context = thread_context->job;
+  lock_and_validate_mutex (&job_context->emit2_mutex);
+  IntermediatePair pair2(key,value);
+  job_context->intermediate_data[thread_id].push_back(pair2);
+  unlock_and_validate_mutex (&job_context->emit2_mutex);
 }
 
 void emit3 (K3 *key, V3 *value, void *context)
