@@ -32,8 +32,10 @@ typedef struct
     std::vector<IntermediateVec*> shuffle_vec;
     std::vector<pthread_t> threads;
     int number_of_threads;
-    std::atomic<int> atomic_counter;
+    std::atomic<int> atomic_input_counter;
+    std::atomic<int> atomic_output_counter;
     std::atomic<uint64_t> job_state;
+    std::atomic<int> intermediate_pairs_counter;
     Barrier *barrier;
     pthread_mutex_t map_mutex;
     pthread_mutex_t emit2_mutex;
@@ -66,7 +68,8 @@ JobContext *createJobContext (const MapReduceClient &client,
   job_context->input_vec = &inputVec;
   job_context->output_vec = &outputVec;
   job_context->number_of_threads = multiThreadLevel;
-  job_context->atomic_counter = 0;
+  job_context->atomic_input_counter = 0;
+  job_context->atomic_output_counter = 0;
 
   uint64_t initialState =
       (UNDEFINED_STAGE << 62) | (0 << 31) | inputVec.size ();
@@ -148,25 +151,27 @@ void check_ret_code (int ret_code, std::string &error_message)
  *************************************************************************/
 
 void update_job_state(JobHandle context, stage_t new_stage, int
-atmoic_counter)
+processed_keys)
 {
   JobContext* job_context = getJobContext (context);
-  if(new_stage == UNDEFINED_STAGE)
+  uint64_t state;
+  switch (new_stage)
   {
-    return;
+    case MAP_STAGE:
+      state = new_stage << 62| processed_keys << 31 |
+                       job_context->input_vec->size();
+      break;
+    case SHUFFLE_STAGE:
+      state = new_stage << 62| processed_keys << 31 |
+              job_context->intermediate_pairs_counter.load();
+      break;
+    case REDUCE_STAGE:
+      state = new_stage << 62| processed_keys << 31 |
+                       job_context->shuffle_vec.size();
+    case UNDEFINED_STAGE:
+      break;
   }
-  if(new_stage == MAP_STAGE)
-  {
-    uint64_t state = new_stage << 62| atmoic_counter << 31 |
-                     job_context->input_vec->size();
-    job_context->job_state.store (state);
-    return;
-  }
-  else if(new_stage == REDUCE_STAGE)
-  {
-
-  }
-//TODO finish this
+  job_context->job_state.store (state);
 }
 
 
@@ -192,7 +197,7 @@ void *runMapPhase (void *args)
   auto *thread_context = static_cast<ThreadContext *>(args);
   auto * context = thread_context->job;
   int input_vec_size = context->input_vec->size ();
-  int old_value = context->atomic_counter.fetch_add (1);
+  int old_value = context->atomic_input_counter.fetch_add (1);
   while (old_value < input_vec_size)
   {
     lock_and_validate_mutex (&context->map_mutex);
@@ -201,7 +206,7 @@ void *runMapPhase (void *args)
     unlock_and_validate_mutex (&context->map_mutex);
     const InputPair &pair = (*context->input_vec)[old_value];
     context->client->map (pair.first, pair.second, thread_context);
-    old_value = context->atomic_counter.fetch_add (1);
+    old_value = context->atomic_input_counter.fetch_add (1);
   }
 }
 
@@ -270,7 +275,7 @@ void *runReducePhase (void *args)
   auto *thread_context = static_cast<ThreadContext *>(args);
   auto * context = thread_context->job;
   int shuffle_vec_size = context->shuffle_vec.size ();
-  int old_value = context->atomic_counter.fetch_add (1);
+  int old_value = context->atomic_output_counter.fetch_add (1);
   while (old_value < shuffle_vec_size)
   {
     lock_and_validate_mutex (&context->reduce_mutex);
@@ -279,7 +284,7 @@ void *runReducePhase (void *args)
     unlock_and_validate_mutex (&context->reduce_mutex);
     const IntermediateVec* vec_to_reduce = context->shuffle_vec[old_value];
     context->client->reduce (vec_to_reduce, context);
-    old_value = context->atomic_counter.fetch_add (1);
+    old_value = context->atomic_output_counter.fetch_add (1);
   }
 }
 
@@ -350,6 +355,7 @@ void emit2 (K2 *key, V2 *value, void *context)
   lock_and_validate_mutex (&job_context->emit2_mutex);
   IntermediatePair pair2(key,value);
   job_context->intermediate_data[thread_id].push_back(pair2);
+  job_context->intermediate_pairs_counter.fetch_add (1);
   unlock_and_validate_mutex (&job_context->emit2_mutex);
 }
 
@@ -387,7 +393,7 @@ void getJobState (JobHandle job, JobState *state)
   else{
     uint64_t total_jobs = job_state & 0x7FFFFFFF;
     uint64_t processed_jobs = (job_state >>31) & 0x7FFFFFFF;
-    state->percentage = 100 * (processed_jobs / total_jobs);
+    state->percentage = (float )(100 * (processed_jobs / total_jobs));
   }
   unlock_and_validate_mutex (&job_context->getState_mutex);
 }
