@@ -1,0 +1,21 @@
+# ninja log v5
+2221	2243	1719930437672345000	lib/libgtest_main.a	df6fce18be01b804
+5	2184	1719930437604227014	mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.o	ba8a95e97738db63
+636	682	1719929218367034914	untitled1	d0003a5c09e10b3
+3	976	1719930623044587636	build.ninja	dc6e6fdbc32a9c79
+0	422	1719920215565852359	CMakeFiles/untitled1.dir/Test/test1-1_thread_1_process.cpp.o	e40caecf7a7f648f
+1004	1040	1719930436469055000	libMapReduceFramework.a	b52e184d5639374a
+5	2141	1719930437563205108	mattanTests/CMakeFiles/mattanTester.dir/SampleClient.cpp.o	6d920f94c872fbe8
+4	1004	1719930436427420916	CMakeFiles/MapReduceFramework.dir/MapReduceFramework.cpp.o	fdc1f2736388ce78
+4	41	1719920592887452002	CMakeFiles/untitled1.dir/Barrier/Barrier.cpp.o	1281f190a0c5ffe
+5	703	1719930436126107157	mattanTests/googletest-build/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o	114df0dec9d9efae
+2184	2221	1719930437650155000	lib/libgtest.a	ce44eb6fd2624fdf
+5	78	1719930435502804422	CMakeFiles/MapReduceFramework.dir/Barrier/Barrier.cpp.o	8b8391299ed2498e
+5	635	1719929218322423194	CMakeFiles/untitled1.dir/MapReduceFramework.cpp.o	ed1f817f6ecd8735
+2243	2292	1719930437714060530	mattanTests/mattanTester	2549f35835e49c60
+6	1557	1719930635815156456	CMakeFiles/MapReduceFramework.dir/MapReduceFramework.cpp.o	fdc1f2736388ce78
+1557	1761	1719930636023519000	libMapReduceFramework.a	b52e184d5639374a
+1762	1849	1719930636109090528	mattanTests/mattanTester	2549f35835e49c60
+4	799	1719930798809322785	CMakeFiles/MapReduceFramework.dir/MapReduceFramework.cpp.o	fdc1f2736388ce78
+799	826	1719930798841466000	libMapReduceFramework.a	b52e184d5639374a
+826	875	1719930798883713847	mattanTests/mattanTester	2549f35835e49c60

@@ -11,7 +11,7 @@
 # =============================================================================
 
 # =============================================================================
-# Project: untitled1
+# Project: ex3
 # Configurations: Debug
 # =============================================================================
 
@@ -41,41 +41,44 @@ include CMakeFiles/rules.ninja
 
 cmake_ninja_workdir = /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/
 # =============================================================================
-# Object build statements for EXECUTABLE target untitled1
+# Object build statements for STATIC_LIBRARY target MapReduceFramework
 
 
 #############################################
-# Order-only phony target for untitled1
+# Order-only phony target for MapReduceFramework
 
-build cmake_object_order_depends_target_untitled1: phony || CMakeFiles/untitled1.dir
+build cmake_object_order_depends_target_MapReduceFramework: phony || CMakeFiles/MapReduceFramework.dir
 
-build CMakeFiles/untitled1.dir/main.cpp.o: CXX_COMPILER__untitled1_unscanned_Debug /Users/omry/Documents/GitHub/OS-EX3/main.cpp || cmake_object_order_depends_target_untitled1
-  DEP_FILE = CMakeFiles/untitled1.dir/main.cpp.o.d
-  FLAGS = -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk -mmacosx-version-min=14.1 -fcolor-diagnostics
-  OBJECT_DIR = CMakeFiles/untitled1.dir
-  OBJECT_FILE_DIR = CMakeFiles/untitled1.dir
+build CMakeFiles/MapReduceFramework.dir/MapReduceFramework.cpp.o: CXX_COMPILER__MapReduceFramework_unscanned_Debug /Users/omry/Documents/GitHub/OS-EX3/MapReduceFramework.cpp || cmake_object_order_depends_target_MapReduceFramework
+  DEP_FILE = CMakeFiles/MapReduceFramework.dir/MapReduceFramework.cpp.o.d
+  FLAGS = -g -std=gnu++11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk -mmacosx-version-min=14.1 -fcolor-diagnostics -Wall -Wextra -O2
+  INCLUDES = -I/Users/omry/Documents/GitHub/OS-EX3
+  OBJECT_DIR = CMakeFiles/MapReduceFramework.dir
+  OBJECT_FILE_DIR = CMakeFiles/MapReduceFramework.dir
 
-build CMakeFiles/untitled1.dir/MapReduceFramework.cpp.o: CXX_COMPILER__untitled1_unscanned_Debug /Users/omry/Documents/GitHub/OS-EX3/MapReduceFramework.cpp || cmake_object_order_depends_target_untitled1
-  DEP_FILE = CMakeFiles/untitled1.dir/MapReduceFramework.cpp.o.d
-  FLAGS = -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk -mmacosx-version-min=14.1 -fcolor-diagnostics
-  OBJECT_DIR = CMakeFiles/untitled1.dir
-  OBJECT_FILE_DIR = CMakeFiles/untitled1.dir
+build CMakeFiles/MapReduceFramework.dir/Barrier/Barrier.cpp.o: CXX_COMPILER__MapReduceFramework_unscanned_Debug /Users/omry/Documents/GitHub/OS-EX3/Barrier/Barrier.cpp || cmake_object_order_depends_target_MapReduceFramework
+  DEP_FILE = CMakeFiles/MapReduceFramework.dir/Barrier/Barrier.cpp.o.d
+  FLAGS = -g -std=gnu++11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk -mmacosx-version-min=14.1 -fcolor-diagnostics -Wall -Wextra -O2
+  INCLUDES = -I/Users/omry/Documents/GitHub/OS-EX3
+  OBJECT_DIR = CMakeFiles/MapReduceFramework.dir
+  OBJECT_FILE_DIR = CMakeFiles/MapReduceFramework.dir/Barrier
 
 
 # =============================================================================
-# Link build statements for EXECUTABLE target untitled1
+# Link build statements for STATIC_LIBRARY target MapReduceFramework
 
 
 #############################################
-# Link the executable untitled1
+# Link the static library libMapReduceFramework.a
 
-build untitled1: CXX_EXECUTABLE_LINKER__untitled1_Debug CMakeFiles/untitled1.dir/main.cpp.o CMakeFiles/untitled1.dir/MapReduceFramework.cpp.o
-  FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk -mmacosx-version-min=14.1
-  OBJECT_DIR = CMakeFiles/untitled1.dir
+build libMapReduceFramework.a: CXX_STATIC_LIBRARY_LINKER__MapReduceFramework_Debug CMakeFiles/MapReduceFramework.dir/MapReduceFramework.cpp.o CMakeFiles/MapReduceFramework.dir/Barrier/Barrier.cpp.o
+  ARCH_FLAGS = -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk -mmacosx-version-min=14.1
+  LANGUAGE_COMPILE_FLAGS = -g
+  OBJECT_DIR = CMakeFiles/MapReduceFramework.dir
   POST_BUILD = :
   PRE_LINK = :
-  TARGET_FILE = untitled1
-  TARGET_PDB = untitled1.dbg
+  TARGET_FILE = libMapReduceFramework.a
+  TARGET_PDB = MapReduceFramework.a.dbg
 
 
 #############################################
@@ -100,8 +103,516 @@ build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
 
 build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 
+
+#############################################
+# Utility command for list_install_components
+
+build list_install_components: phony
+
+
+#############################################
+# Utility command for install
+
+build CMakeFiles/install.util: CUSTOM_COMMAND all
+  COMMAND = cd /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug && /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -P cmake_install.cmake
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build install: phony CMakeFiles/install.util
+
+
+#############################################
+# Utility command for install/local
+
+build CMakeFiles/install/local.util: CUSTOM_COMMAND all
+  COMMAND = cd /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug && /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build install/local: phony CMakeFiles/install/local.util
+
+
+#############################################
+# Utility command for install/strip
+
+build CMakeFiles/install/strip.util: CUSTOM_COMMAND all
+  COMMAND = cd /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug && /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+  DESC = Installing the project stripped...
+  pool = console
+  restat = 1
+
+build install/strip: phony CMakeFiles/install/strip.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/omry/Documents/GitHub/OS-EX3/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for EXECUTABLE target mattanTester
+
+
+#############################################
+# Order-only phony target for mattanTester
+
+build cmake_object_order_depends_target_mattanTester: phony || cmake_object_order_depends_target_MapReduceFramework cmake_object_order_depends_target_gtest cmake_object_order_depends_target_gtest_main
+
+build mattanTests/CMakeFiles/mattanTester.dir/SampleClient.cpp.o: CXX_COMPILER__mattanTester_unscanned_Debug /Users/omry/Documents/GitHub/OS-EX3/mattanTests/SampleClient.cpp || cmake_object_order_depends_target_mattanTester
+  DEFINES = -DRANDOM_STRINGS_PATH=\"/Users/omry/Documents/GitHub/OS-EX3/mattanTests/randomstring.txt\"
+  DEP_FILE = mattanTests/CMakeFiles/mattanTester.dir/SampleClient.cpp.o.d
+  FLAGS = -g -std=gnu++14 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk -mmacosx-version-min=14.1 -fcolor-diagnostics -Wall -Wextra -O2
+  INCLUDES = -I/Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-src/googlemock/include -I/Users/omry/Documents/GitHub/OS-EX3/mattanTests/.. -I/Users/omry/Documents/GitHub/OS-EX3 -isystem /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-src/googletest/include -isystem /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-src/googletest
+  OBJECT_DIR = mattanTests/CMakeFiles/mattanTester.dir
+  OBJECT_FILE_DIR = mattanTests/CMakeFiles/mattanTester.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target mattanTester
+
+
+#############################################
+# Link the executable mattanTests/mattanTester
+
+build mattanTests/mattanTester: CXX_EXECUTABLE_LINKER__mattanTester_Debug mattanTests/CMakeFiles/mattanTester.dir/SampleClient.cpp.o | libMapReduceFramework.a lib/libgtest_main.a lib/libgtest.a || lib/libgtest.a lib/libgtest_main.a libMapReduceFramework.a
+  FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk -mmacosx-version-min=14.1
+  LINK_LIBRARIES = libMapReduceFramework.a  lib/libgtest_main.a  lib/libgtest.a
+  OBJECT_DIR = mattanTests/CMakeFiles/mattanTester.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = mattanTests/mattanTester
+  TARGET_PDB = mattanTester.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build mattanTests/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests && /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build mattanTests/edit_cache: phony mattanTests/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build mattanTests/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests && /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake --regenerate-during-build -S/Users/omry/Documents/GitHub/OS-EX3 -B/Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build mattanTests/rebuild_cache: phony mattanTests/CMakeFiles/rebuild_cache.util
+
+
+#############################################
+# Utility command for list_install_components
+
+build mattanTests/list_install_components: phony
+
+
+#############################################
+# Utility command for install
+
+build mattanTests/CMakeFiles/install.util: CUSTOM_COMMAND mattanTests/all
+  COMMAND = cd /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests && /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -P cmake_install.cmake
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build mattanTests/install: phony mattanTests/CMakeFiles/install.util
+
+
+#############################################
+# Utility command for install/local
+
+build mattanTests/CMakeFiles/install/local.util: CUSTOM_COMMAND mattanTests/all
+  COMMAND = cd /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests && /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build mattanTests/install/local: phony mattanTests/CMakeFiles/install/local.util
+
+
+#############################################
+# Utility command for install/strip
+
+build mattanTests/CMakeFiles/install/strip.util: CUSTOM_COMMAND mattanTests/all
+  COMMAND = cd /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests && /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+  DESC = Installing the project stripped...
+  pool = console
+  restat = 1
+
+build mattanTests/install/strip: phony mattanTests/CMakeFiles/install/strip.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/omry/Documents/GitHub/OS-EX3/mattanTests/CMakeLists.txt
+# =============================================================================
+
+
+#############################################
+# Utility command for edit_cache
+
+build mattanTests/googletest-build/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-build && /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build mattanTests/googletest-build/edit_cache: phony mattanTests/googletest-build/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build mattanTests/googletest-build/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-build && /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake --regenerate-during-build -S/Users/omry/Documents/GitHub/OS-EX3 -B/Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build mattanTests/googletest-build/rebuild_cache: phony mattanTests/googletest-build/CMakeFiles/rebuild_cache.util
+
+
+#############################################
+# Utility command for list_install_components
+
+build mattanTests/googletest-build/list_install_components: phony
+
+
+#############################################
+# Utility command for install
+
+build mattanTests/googletest-build/CMakeFiles/install.util: CUSTOM_COMMAND mattanTests/googletest-build/all
+  COMMAND = cd /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-build && /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -P cmake_install.cmake
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build mattanTests/googletest-build/install: phony mattanTests/googletest-build/CMakeFiles/install.util
+
+
+#############################################
+# Utility command for install/local
+
+build mattanTests/googletest-build/CMakeFiles/install/local.util: CUSTOM_COMMAND mattanTests/googletest-build/all
+  COMMAND = cd /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-build && /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build mattanTests/googletest-build/install/local: phony mattanTests/googletest-build/CMakeFiles/install/local.util
+
+
+#############################################
+# Utility command for install/strip
+
+build mattanTests/googletest-build/CMakeFiles/install/strip.util: CUSTOM_COMMAND mattanTests/googletest-build/all
+  COMMAND = cd /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-build && /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+  DESC = Installing the project stripped...
+  pool = console
+  restat = 1
+
+build mattanTests/googletest-build/install/strip: phony mattanTests/googletest-build/CMakeFiles/install/strip.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-src/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for STATIC_LIBRARY target gmock
+
+
+#############################################
+# Order-only phony target for gmock
+
+build cmake_object_order_depends_target_gmock: phony || cmake_object_order_depends_target_gtest
+
+build mattanTests/googletest-build/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.o: CXX_COMPILER__gmock_unscanned_Debug /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-src/googlemock/src/gmock-all.cc || cmake_object_order_depends_target_gmock
+  DEP_FILE = mattanTests/googletest-build/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.o.d
+  FLAGS = -g -std=c++14 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk -mmacosx-version-min=14.1 -fcolor-diagnostics  -DGTEST_HAS_PTHREAD=1
+  INCLUDES = -I/Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-src/googlemock/include -I/Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-src/googlemock -isystem /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-src/googletest/include -isystem /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-src/googletest
+  OBJECT_DIR = mattanTests/googletest-build/googlemock/CMakeFiles/gmock.dir
+  OBJECT_FILE_DIR = mattanTests/googletest-build/googlemock/CMakeFiles/gmock.dir/src
+
+
+# =============================================================================
+# Link build statements for STATIC_LIBRARY target gmock
+
+
+#############################################
+# Link the static library lib/libgmock.a
+
+build lib/libgmock.a: CXX_STATIC_LIBRARY_LINKER__gmock_Debug mattanTests/googletest-build/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.o || lib/libgtest.a
+  ARCH_FLAGS = -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk -mmacosx-version-min=14.1
+  LANGUAGE_COMPILE_FLAGS = -g
+  OBJECT_DIR = mattanTests/googletest-build/googlemock/CMakeFiles/gmock.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = lib/libgmock.a
+  TARGET_PDB = gmock.a.dbg
+
+# =============================================================================
+# Object build statements for STATIC_LIBRARY target gmock_main
+
+
+#############################################
+# Order-only phony target for gmock_main
+
+build cmake_object_order_depends_target_gmock_main: phony || cmake_object_order_depends_target_gmock cmake_object_order_depends_target_gtest
+
+build mattanTests/googletest-build/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o: CXX_COMPILER__gmock_main_unscanned_Debug /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-src/googlemock/src/gmock_main.cc || cmake_object_order_depends_target_gmock_main
+  DEP_FILE = mattanTests/googletest-build/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o.d
+  FLAGS = -g -std=c++14 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk -mmacosx-version-min=14.1 -fcolor-diagnostics  -DGTEST_HAS_PTHREAD=1
+  INCLUDES = -isystem /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-src/googlemock/include -isystem /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-src/googlemock -isystem /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-src/googletest/include -isystem /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-src/googletest
+  OBJECT_DIR = mattanTests/googletest-build/googlemock/CMakeFiles/gmock_main.dir
+  OBJECT_FILE_DIR = mattanTests/googletest-build/googlemock/CMakeFiles/gmock_main.dir/src
+
+
+# =============================================================================
+# Link build statements for STATIC_LIBRARY target gmock_main
+
+
+#############################################
+# Link the static library lib/libgmock_main.a
+
+build lib/libgmock_main.a: CXX_STATIC_LIBRARY_LINKER__gmock_main_Debug mattanTests/googletest-build/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o || lib/libgmock.a lib/libgtest.a
+  ARCH_FLAGS = -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk -mmacosx-version-min=14.1
+  LANGUAGE_COMPILE_FLAGS = -g
+  OBJECT_DIR = mattanTests/googletest-build/googlemock/CMakeFiles/gmock_main.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = lib/libgmock_main.a
+  TARGET_PDB = gmock_main.a.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build mattanTests/googletest-build/googlemock/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-build/googlemock && /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build mattanTests/googletest-build/googlemock/edit_cache: phony mattanTests/googletest-build/googlemock/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build mattanTests/googletest-build/googlemock/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-build/googlemock && /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake --regenerate-during-build -S/Users/omry/Documents/GitHub/OS-EX3 -B/Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build mattanTests/googletest-build/googlemock/rebuild_cache: phony mattanTests/googletest-build/googlemock/CMakeFiles/rebuild_cache.util
+
+
+#############################################
+# Utility command for list_install_components
+
+build mattanTests/googletest-build/googlemock/list_install_components: phony
+
+
+#############################################
+# Utility command for install
+
+build mattanTests/googletest-build/googlemock/CMakeFiles/install.util: CUSTOM_COMMAND mattanTests/googletest-build/googlemock/all
+  COMMAND = cd /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-build/googlemock && /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -P cmake_install.cmake
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build mattanTests/googletest-build/googlemock/install: phony mattanTests/googletest-build/googlemock/CMakeFiles/install.util
+
+
+#############################################
+# Utility command for install/local
+
+build mattanTests/googletest-build/googlemock/CMakeFiles/install/local.util: CUSTOM_COMMAND mattanTests/googletest-build/googlemock/all
+  COMMAND = cd /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-build/googlemock && /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build mattanTests/googletest-build/googlemock/install/local: phony mattanTests/googletest-build/googlemock/CMakeFiles/install/local.util
+
+
+#############################################
+# Utility command for install/strip
+
+build mattanTests/googletest-build/googlemock/CMakeFiles/install/strip.util: CUSTOM_COMMAND mattanTests/googletest-build/googlemock/all
+  COMMAND = cd /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-build/googlemock && /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+  DESC = Installing the project stripped...
+  pool = console
+  restat = 1
+
+build mattanTests/googletest-build/googlemock/install/strip: phony mattanTests/googletest-build/googlemock/CMakeFiles/install/strip.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-src/googlemock/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for STATIC_LIBRARY target gtest
+
+
+#############################################
+# Order-only phony target for gtest
+
+build cmake_object_order_depends_target_gtest: phony || mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir
+
+build mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.o: CXX_COMPILER__gtest_unscanned_Debug /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-src/googletest/src/gtest-all.cc || cmake_object_order_depends_target_gtest
+  DEP_FILE = mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.o.d
+  FLAGS = -g -std=c++14 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk -mmacosx-version-min=14.1 -fcolor-diagnostics  -DGTEST_HAS_PTHREAD=1
+  INCLUDES = -I/Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-src/googletest/include -I/Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-src/googletest
+  OBJECT_DIR = mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir
+  OBJECT_FILE_DIR = mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir/src
+
+
+# =============================================================================
+# Link build statements for STATIC_LIBRARY target gtest
+
+
+#############################################
+# Link the static library lib/libgtest.a
+
+build lib/libgtest.a: CXX_STATIC_LIBRARY_LINKER__gtest_Debug mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.o
+  ARCH_FLAGS = -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk -mmacosx-version-min=14.1
+  LANGUAGE_COMPILE_FLAGS = -g
+  OBJECT_DIR = mattanTests/googletest-build/googletest/CMakeFiles/gtest.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = lib/libgtest.a
+  TARGET_PDB = gtest.a.dbg
+
+# =============================================================================
+# Object build statements for STATIC_LIBRARY target gtest_main
+
+
+#############################################
+# Order-only phony target for gtest_main
+
+build cmake_object_order_depends_target_gtest_main: phony || cmake_object_order_depends_target_gtest
+
+build mattanTests/googletest-build/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o: CXX_COMPILER__gtest_main_unscanned_Debug /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-src/googletest/src/gtest_main.cc || cmake_object_order_depends_target_gtest_main
+  DEP_FILE = mattanTests/googletest-build/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o.d
+  FLAGS = -g -std=c++14 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk -mmacosx-version-min=14.1 -fcolor-diagnostics  -DGTEST_HAS_PTHREAD=1
+  INCLUDES = -isystem /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-src/googletest/include -isystem /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-src/googletest
+  OBJECT_DIR = mattanTests/googletest-build/googletest/CMakeFiles/gtest_main.dir
+  OBJECT_FILE_DIR = mattanTests/googletest-build/googletest/CMakeFiles/gtest_main.dir/src
+
+
+# =============================================================================
+# Link build statements for STATIC_LIBRARY target gtest_main
+
+
+#############################################
+# Link the static library lib/libgtest_main.a
+
+build lib/libgtest_main.a: CXX_STATIC_LIBRARY_LINKER__gtest_main_Debug mattanTests/googletest-build/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o || lib/libgtest.a
+  ARCH_FLAGS = -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk -mmacosx-version-min=14.1
+  LANGUAGE_COMPILE_FLAGS = -g
+  OBJECT_DIR = mattanTests/googletest-build/googletest/CMakeFiles/gtest_main.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = lib/libgtest_main.a
+  TARGET_PDB = gtest_main.a.dbg
+
+
+#############################################
+# Utility command for edit_cache
+
+build mattanTests/googletest-build/googletest/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-build/googletest && /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build mattanTests/googletest-build/googletest/edit_cache: phony mattanTests/googletest-build/googletest/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build mattanTests/googletest-build/googletest/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-build/googletest && /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake --regenerate-during-build -S/Users/omry/Documents/GitHub/OS-EX3 -B/Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build mattanTests/googletest-build/googletest/rebuild_cache: phony mattanTests/googletest-build/googletest/CMakeFiles/rebuild_cache.util
+
+
+#############################################
+# Utility command for list_install_components
+
+build mattanTests/googletest-build/googletest/list_install_components: phony
+
+
+#############################################
+# Utility command for install
+
+build mattanTests/googletest-build/googletest/CMakeFiles/install.util: CUSTOM_COMMAND mattanTests/googletest-build/googletest/all
+  COMMAND = cd /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-build/googletest && /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -P cmake_install.cmake
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build mattanTests/googletest-build/googletest/install: phony mattanTests/googletest-build/googletest/CMakeFiles/install.util
+
+
+#############################################
+# Utility command for install/local
+
+build mattanTests/googletest-build/googletest/CMakeFiles/install/local.util: CUSTOM_COMMAND mattanTests/googletest-build/googletest/all
+  COMMAND = cd /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-build/googletest && /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build mattanTests/googletest-build/googletest/install/local: phony mattanTests/googletest-build/googletest/CMakeFiles/install/local.util
+
+
+#############################################
+# Utility command for install/strip
+
+build mattanTests/googletest-build/googletest/CMakeFiles/install/strip.util: CUSTOM_COMMAND mattanTests/googletest-build/googletest/all
+  COMMAND = cd /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-build/googletest && /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+  DESC = Installing the project stripped...
+  pool = console
+  restat = 1
+
+build mattanTests/googletest-build/googletest/install/strip: phony mattanTests/googletest-build/googletest/CMakeFiles/install/strip.util
+
 # =============================================================================
 # Target aliases.
+
+build MapReduceFramework: phony libMapReduceFramework.a
+
+build gmock: phony lib/libgmock.a
+
+build gmock_main: phony lib/libgmock_main.a
+
+build gtest: phony lib/libgtest.a
+
+build gtest_main: phony lib/libgtest_main.a
+
+build libgmock.a: phony lib/libgmock.a
+
+build libgmock_main.a: phony lib/libgmock_main.a
+
+build libgtest.a: phony lib/libgtest.a
+
+build libgtest_main.a: phony lib/libgtest_main.a
+
+build mattanTester: phony mattanTests/mattanTester
 
 # =============================================================================
 # Folder targets.
@@ -111,7 +622,40 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 #############################################
 # Folder: /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug
 
-build all: phony untitled1
+build all: phony libMapReduceFramework.a mattanTests/all
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests
+
+build mattanTests/all: phony mattanTests/mattanTester
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-build
+
+build mattanTests/googletest-build/all: phony mattanTests/googletest-build/googlemock/all
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-build/googlemock
+
+build mattanTests/googletest-build/googlemock/all: phony lib/libgmock.a lib/libgmock_main.a mattanTests/googletest-build/googletest/all
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/omry/Documents/GitHub/OS-EX3/cmake-build-debug/mattanTests/googletest-build/googletest
+
+build mattanTests/googletest-build/googletest/all: phony lib/libgtest.a lib/libgtest_main.a
+
+# =============================================================================
+# Unknown Build Time Dependencies.
+# Tell Ninja that they may appear as side effects of build rules
+# otherwise ordered by order-only dependencies.
 
 # =============================================================================
 # Built-in targets
@@ -120,14 +664,14 @@ build all: phony untitled1
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build build.ninja: RERUN_CMAKE | /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeCInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeCXXInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeCommonLanguageInclude.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeGenericSystem.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeInitializeConfigs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeLanguageInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeSystemSpecificInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeSystemSpecificInitialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Compiler/AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Compiler/AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Compiler/CMakeCommonCompilerMacros.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Compiler/Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Compiler/GNU.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/Apple-AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/Apple-AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/Apple-Clang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/Apple-Clang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/Apple-Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/Darwin-Initialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/Darwin.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/UnixPaths.cmake /Users/omry/Documents/GitHub/OS-EX3/CMakeLists.txt CMakeCache.txt CMakeFiles/3.28.1/CMakeCCompiler.cmake CMakeFiles/3.28.1/CMakeCXXCompiler.cmake CMakeFiles/3.28.1/CMakeSystem.cmake
+build build.ninja: RERUN_CMAKE | /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/BasicConfigVersion-AnyNewerVersion.cmake.in /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeCInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeCXXInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeCommonLanguageInclude.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeDependentOption.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeGenericSystem.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeInitializeConfigs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeLanguageInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakePackageConfigHelpers.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeSystemSpecificInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeSystemSpecificInitialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CheckCSourceCompiles.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CheckIncludeFile.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CheckLibraryExists.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Compiler/AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Compiler/AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Compiler/CMakeCommonCompilerMacros.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Compiler/Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Compiler/GNU.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/FindPackageHandleStandardArgs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/FindPackageMessage.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/FindThreads.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/GNUInstallDirs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Internal/CheckSourceCompiles.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/Apple-AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/Apple-AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/Apple-Clang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/Apple-Clang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/Apple-Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/Darwin-Initialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/Darwin.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/UnixPaths.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/WriteBasicConfigVersionFile.cmake /Users/omry/Documents/GitHub/OS-EX3/CMakeLists.txt /Users/omry/Documents/GitHub/OS-EX3/mattanTests/CMakeLists.txt /Users/omry/Documents/GitHub/OS-EX3/mattanTests/CMakeLists.txt.in CMakeCache.txt CMakeFiles/3.28.1/CMakeCCompiler.cmake CMakeFiles/3.28.1/CMakeCXXCompiler.cmake CMakeFiles/3.28.1/CMakeSystem.cmake mattanTests/googletest-src/CMakeLists.txt mattanTests/googletest-src/googlemock/CMakeLists.txt mattanTests/googletest-src/googlemock/cmake/gmock.pc.in mattanTests/googletest-src/googlemock/cmake/gmock_main.pc.in mattanTests/googletest-src/googletest/CMakeLists.txt mattanTests/googletest-src/googletest/cmake/Config.cmake.in mattanTests/googletest-src/googletest/cmake/gtest.pc.in mattanTests/googletest-src/googletest/cmake/gtest_main.pc.in mattanTests/googletest-src/googletest/cmake/internal_utils.cmake
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeCInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeCXXInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeCommonLanguageInclude.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeGenericSystem.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeInitializeConfigs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeLanguageInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeSystemSpecificInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeSystemSpecificInitialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Compiler/AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Compiler/AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Compiler/CMakeCommonCompilerMacros.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Compiler/Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Compiler/GNU.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/Apple-AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/Apple-AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/Apple-Clang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/Apple-Clang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/Apple-Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/Darwin-Initialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/Darwin.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/UnixPaths.cmake /Users/omry/Documents/GitHub/OS-EX3/CMakeLists.txt CMakeCache.txt CMakeFiles/3.28.1/CMakeCCompiler.cmake CMakeFiles/3.28.1/CMakeCXXCompiler.cmake CMakeFiles/3.28.1/CMakeSystem.cmake: phony
+build /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/BasicConfigVersion-AnyNewerVersion.cmake.in /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeCInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeCXXInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeCommonLanguageInclude.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeDependentOption.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeGenericSystem.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeInitializeConfigs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeLanguageInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakePackageConfigHelpers.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeSystemSpecificInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CMakeSystemSpecificInitialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CheckCSourceCompiles.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CheckIncludeFile.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/CheckLibraryExists.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Compiler/AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Compiler/AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Compiler/CMakeCommonCompilerMacros.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Compiler/Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Compiler/GNU.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/FindPackageHandleStandardArgs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/FindPackageMessage.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/FindThreads.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/GNUInstallDirs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Internal/CheckSourceCompiles.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/Apple-AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/Apple-AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/Apple-Clang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/Apple-Clang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/Apple-Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/Darwin-Initialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/Darwin.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/Platform/UnixPaths.cmake /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.28/Modules/WriteBasicConfigVersionFile.cmake /Users/omry/Documents/GitHub/OS-EX3/CMakeLists.txt /Users/omry/Documents/GitHub/OS-EX3/mattanTests/CMakeLists.txt /Users/omry/Documents/GitHub/OS-EX3/mattanTests/CMakeLists.txt.in CMakeCache.txt CMakeFiles/3.28.1/CMakeCCompiler.cmake CMakeFiles/3.28.1/CMakeCXXCompiler.cmake CMakeFiles/3.28.1/CMakeSystem.cmake mattanTests/googletest-src/CMakeLists.txt mattanTests/googletest-src/googlemock/CMakeLists.txt mattanTests/googletest-src/googlemock/cmake/gmock.pc.in mattanTests/googletest-src/googlemock/cmake/gmock_main.pc.in mattanTests/googletest-src/googletest/CMakeLists.txt mattanTests/googletest-src/googletest/cmake/Config.cmake.in mattanTests/googletest-src/googletest/cmake/gtest.pc.in mattanTests/googletest-src/googletest/cmake/gtest_main.pc.in mattanTests/googletest-src/googletest/cmake/internal_utils.cmake: phony
 
 
 #############################################

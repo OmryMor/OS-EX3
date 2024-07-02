@@ -81,6 +81,8 @@ JobContext *createJobContext (const MapReduceClient &client,
   pthread_mutex_init (&job_context->emit2_mutex, nullptr);
   pthread_mutex_init (&job_context->emit3_mutex, nullptr);
   pthread_mutex_init (&job_context->reduce_mutex, nullptr);
+  pthread_mutex_init (&job_context->getState_mutex, nullptr);
+
 
   job_context->barrier = new Barrier (multiThreadLevel);
 
@@ -156,7 +158,7 @@ void check_ret_code (int ret_code, std::string &error_message)
 {
   if (ret_code != SUCCESS_RET_VAL)
   {
-    std::cout << SYSTEM_ERROR_MSG << error_message << std::endl;
+    std::cout << SYSTEM_ERROR_MSG << error_message << "\n";
     exit (1);
   }
 }
