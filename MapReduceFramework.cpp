@@ -3,12 +3,12 @@
 //
 #include "MapReduceFramework.h"
 #include "Barrier/Barrier.h"
+#include <pthread.h>
 #include <csignal>
 #include <vector>
 #include <atomic>
 #include <cstdlib>
 #include <iostream>
-#include <bits/semaphore.h>
 #include <semaphore.h>
 #include <algorithm>
 
@@ -21,6 +21,9 @@
 /*************************************************************************
  *                        JobContext Management                          *
  *************************************************************************/
+void update_job_state(JobHandle context, stage_t new_stage, int
+processed_keys);
+typedef struct ThreadContext ThreadContext;
 
 
 typedef struct
@@ -28,10 +31,12 @@ typedef struct
     const MapReduceClient *client;
     const InputVec *input_vec;
     OutputVec *output_vec;
+    std::vector<ThreadContext*> threads_contexts;
     std::vector<IntermediateVec> intermediate_data;
     std::vector<IntermediateVec*> shuffle_vec;
     std::vector<pthread_t> threads;
     int number_of_threads;
+    bool is_waiting;
     std::atomic<int> atomic_input_counter;
     std::atomic<int> atomic_output_counter;
     std::atomic<uint64_t> job_state;
@@ -46,11 +51,11 @@ typedef struct
 } JobContext;
 
 
-typedef struct
+struct ThreadContext
 {
     int tid;
     JobContext *job;
-}ThreadContext;
+};
 
 
 JobContext *createJobContext (const MapReduceClient &client,
@@ -68,12 +73,9 @@ JobContext *createJobContext (const MapReduceClient &client,
   job_context->input_vec = &inputVec;
   job_context->output_vec = &outputVec;
   job_context->number_of_threads = multiThreadLevel;
+  job_context->is_waiting = false;
   job_context->atomic_input_counter = 0;
   job_context->atomic_output_counter = 0;
-
-  uint64_t initialState =
-      (UNDEFINED_STAGE << 62) | (0 << 31) | inputVec.size ();
-  job_context->job_state.store (initialState);
 
   pthread_mutex_init (&job_context->map_mutex, nullptr);
   pthread_mutex_init (&job_context->emit2_mutex, nullptr);
@@ -84,38 +86,40 @@ JobContext *createJobContext (const MapReduceClient &client,
   job_context->intermediate_data.resize (multiThreadLevel);
   job_context->threads.resize (multiThreadLevel);
 
+  update_job_state (job_context, UNDEFINED_STAGE, 0);
 
   return job_context;
 }
 
-void freeThreadVector(int num_of_threads, std::vector<ThreadContext*>*
-thread_vec)
+void freeThreadVector(JobContext* job)
 {
+  int num_of_threads = job->number_of_threads;
   for (int i = 0; i < num_of_threads; ++i)
   {
-      if(thread_vec->at (i)!= nullptr){
-        thread_vec->at (i)->job = nullptr;
-        free (thread_vec->at (i));
+      if(job->threads_contexts.at (i) != nullptr){
+        job->threads_contexts.at (i)->job = nullptr;
+        free (job->threads_contexts.at (i));
       }
   }
 }
 
-void createThreadVector(int num_of_threads, std::vector<ThreadContext*>*
-    thread_vec, JobContext* job)
+void createThreadVector(JobContext* job)
 {
+  int num_of_threads = job->number_of_threads;
   for (int i = 0; i < num_of_threads; ++i)
   {
-    ThreadContext * t = (ThreadContext *)malloc(sizeof (ThreadContext ));
-    if(t== nullptr)
+    ThreadContext * thread_context = (ThreadContext *)malloc(sizeof
+        (ThreadContext ));
+    if(thread_context== nullptr)
     {
       std::cout << SYSTEM_ERROR_MSG << "Failed to allocate memory while "
                                        "creating thread struct" << std::endl;
-      freeThreadVector(num_of_threads, thread_vec);
+      freeThreadVector(job);
       exit(1);
     }
-    t->tid = i;
-    t->job = job;
-    thread_vec->push_back(t);
+    thread_context->tid = i;
+    thread_context->job = job;
+    job->threads_contexts.push_back(thread_context);
   }
 }
 
@@ -155,22 +159,21 @@ processed_keys)
 {
   JobContext* job_context = getJobContext (context);
   uint64_t state;
+  uint64_t full_keys;
   switch (new_stage)
   {
     case MAP_STAGE:
-      state = new_stage << 62| processed_keys << 31 |
-                       job_context->input_vec->size();
+      full_keys = job_context->input_vec->size();
       break;
     case SHUFFLE_STAGE:
-      state = new_stage << 62| processed_keys << 31 |
-              job_context->intermediate_pairs_counter.load();
+      full_keys = job_context->intermediate_pairs_counter.load();
       break;
     case REDUCE_STAGE:
-      state = new_stage << 62| processed_keys << 31 |
-                       job_context->shuffle_vec.size();
+      full_keys = job_context->shuffle_vec.size();
     case UNDEFINED_STAGE:
-      break;
+      full_keys = job_context->input_vec->size();
   }
+  state = new_stage << 62  | processed_keys << 31 | full_keys;
   job_context->job_state.store (state);
 }
 
@@ -336,7 +339,7 @@ JobHandle startMapReduceJob (const MapReduceClient &client,
   JobContext *job_context = createJobContext (client, inputVec, outputVec, multiThreadLevel);
 
   std::vector<ThreadContext*> thread_contexts;
-  createThreadVector (multiThreadLevel, &thread_contexts, job_context);
+  createThreadVector (job_context);
   // run map reduce algorithm on threads 0 to multiThreadLevel-1
   for (int i = 0; i < multiThreadLevel; i++)
   {
@@ -372,12 +375,15 @@ void emit3 (K3 *key, V3 *value, void *context)
 void waitForJob (JobHandle job)
 {
   JobContext *job_context = getJobContext (job);
-  //TODO check if job is already called to wait
+  if(job_context->is_waiting){
+    return;
+  }
   for (pthread_t thread: job_context->threads)
   {
     int ret_val = pthread_join (thread, nullptr);
     check_ret_code (ret_val, (std::string &) "Failed calling pthread_join");
   }
+  job_context->is_waiting= true;
 }
 
 void getJobState (JobHandle job, JobState *state)
@@ -404,8 +410,7 @@ void closeJobHandle (JobHandle job)
   JobContext *job_context = getJobContext (job);
   destroyMutex (job_context);
   delete job_context->barrier;
-  //TODO this line 413
-  //freeThreadVector (job_context->number_of_threads, job_context.)
+  freeThreadVector (job_context);
   free (job_context);
   job = nullptr;
 }
